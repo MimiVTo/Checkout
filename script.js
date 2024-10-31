@@ -57,7 +57,7 @@ var cartBtn = document.getElementById("button");
 var containedElements = document.getElementById("elementContainer");
 var afterStuff = document.getElementById("afterAddedStuff");
 
-//CHECK OUT VARIABLES ------------------------------
+//CHECK OUT AND THE TOTAL VARIABLES ------------------------------
 var checkOut = document.createElement("button");
 checkOut.innerText = "Check Out";
 var totalInfo = document.createElement("p");
@@ -70,17 +70,24 @@ var totalCost = document.createElement("p");
 function addToCart(){
     
     //STORED INPUTS ------------------------------
+
+    //ITEMS
     var itemCode = document.getElementById("item").value;
     var isExisting = checkIfItemExists(itemCode);
+    //QUANTITY
     var quantity = document.getElementById("amount").value;
     var collection = document.getElementsByClassName("containerClass");
 
     if(itemCode ===""){
+        //IF THERES NOTHING, YOU RETURN BACK ---------------
         return;
     }
 
     if (isExisting){
+        //CHANGES THE AMOUNT IF ITEM IS RESCANNED ----------
         isExisting.querySelector("#quantityAmount").innerText = parseInt(isExisting.querySelector("#quantityAmount").innerText) + parseInt(quantity);
+
+        //ACTUALLY CHANGE TOTAL
         total += items[itemCode].price * quantity;
         totalInfo.innerText = "Total = $" + total;
     }
@@ -125,11 +132,17 @@ function addToCart(){
         }
     }
     
+    //PUSH THE INFORMATION ABOUT THE TOTAL
     containedItems.appendChild(totalInfo);
     
+    //ADD THE CHECK OUT BUTTON
     containedItems.appendChild(checkOut);
     checkOut.classList.add("btn");
+
+    //CHANGE INNER TEXT TO HAVE THE INFO
     totalInfo.innerText = "Total = $" + total;
+
+    //EVENT LISTENER FOR THE CHECK OUT
     checkOut.addEventListener("click", checkOutTime);
 }
 
@@ -137,10 +150,13 @@ function checkIfItemExists(itemCode){
     // console.log(itemCode);
     var itemsArray = document.getElementsByClassName("containerClass");
    
-
+    //FOR LOOP
     for(var i=0;i<itemsArray.length;i++){
+        //VARIABLE
         var names = itemsArray[i].querySelector("#itemName");
         console.log(items[itemCode]);
+
+        //IF THE NAME IS THE SAME, IT GOES THROUGH
         if(names.innerText === items[itemCode].name){
             console.log("returning")
             return itemsArray[i];
@@ -149,6 +165,7 @@ function checkIfItemExists(itemCode){
 }
 
 function checkOutTime(){
+    //TELLS GRAND TOTAL
     afterStuff.appendChild(totalCost);
     totalCost.innerText = "Your grand total, including tax of "+ tax+"%" + " is $"+total*tax;
 }
